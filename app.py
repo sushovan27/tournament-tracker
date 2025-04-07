@@ -1,9 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from decimal import Decimal
+import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///donations.db'
+
+# Dynamically set the database URI based on environment
+if 'RENDER' in os.environ:  # Check if running on Render
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////opt/render/data/donations.db'
+else:  # Local development
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///donations.db'  # Relative path
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -37,7 +44,15 @@ def thanks():
 @app.route('/view')
 def view_donations():
     donations = Donation.query.all()
-    return render_template('view.html', donations=donations)
+    total_amount = sum(donation.amount for donation in donations)
+    return render_template('view.html', donations=donations, total_amount=total_amount)
+
+@app.route('/delete/<int:id>', methods=['POST'])
+def delete_donation(id):
+    donation = Donation.query.get_or_404(id)
+    db.session.delete(donation)
+    db.session.commit()
+    return redirect(url_for('view_donations'))
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -100,6 +100,34 @@ th {
     background-color: #007bff;
 }
 
+/* Delete Button */
+.delete-form {
+    display: inline;
+}
+
+.delete-btn {
+    width: auto;
+    padding: 0.4rem 0.8rem;
+    background-color: #ff4444;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.delete-btn:hover {
+    background-color: #cc0000;
+}
+
+/* Total Amount */
+.total-amount {
+    margin: 1rem 0;
+    text-align: right;
+}
+
+.total-amount p {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    color: #00d4ff;
+}
+
 /* Footer */
 footer {
     text-align: center;
@@ -177,13 +205,12 @@ footer {
     input[type="text"], input[type="number"], button {
         padding: 0.5rem;
     }
-    /* Table to Card-like Layout */
     table {
         display: block;
         overflow-x: auto;
     }
     thead {
-        display: none; /* Hide headers on mobile */
+        display: none;
     }
     tbody, tr, td {
         display: block;
@@ -207,6 +234,13 @@ footer {
         font-weight: bold;
         color: #00d4ff;
         margin-right: 0.5rem;
+    }
+    .delete-btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+    }
+    .total-amount {
+        text-align: center;
     }
     footer {
         padding: 0.75rem;
