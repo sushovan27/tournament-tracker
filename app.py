@@ -6,10 +6,12 @@ import os
 app = Flask(__name__)
 
 # Dynamically set the database URI based on environment
-if 'RENDER' in os.environ:  # Check if running on Render
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////opt/render/data/donations.db'
+if 'RENDER' in os.environ:  # Running on Render
+    db_path = '/opt/render/data/donations.db'
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)  # Create directory if it doesn’t exist
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 else:  # Local development
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///donations.db'  # Relative path
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///donations.db'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
